@@ -1,0 +1,435 @@
+<script>
+(function () {
+  var SITIO = 'https://sites.google.com/miredips.org/qualitylab';
+  var COL = { azul: 'var(--azul)', verde: 'var(--verde)', naranja: 'var(--naranja)', amarillo: '#E0B400', violeta: 'var(--violeta)' };
+  var MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var D = DATOS || {};
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fecha(f) { return new Date(String(f).slice(0, 10) + 'T00:00:00'); }
+  var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+
+  /* ---------- Navegación ---------- */
+  var actual = null;
+  function mostrar(s, destino) {
+    var pgs = document.querySelectorAll('.pg');
+    for (var i = 0; i < pgs.length; i++) pgs[i].hidden = pgs[i].getAttribute('data-sec') !== s;
+    var links = document.querySelectorAll('.topnav a[data-s]');
+    for (var j = 0; j < links.length; j++) links[j].classList.toggle('act', links[j].getAttribute('data-s') === s);
+    actual = s;
+    if (typeof reactivarPildoras === 'function') reactivarPildoras();
+    if (destino && $(destino)) { $(destino).scrollIntoView({ behavior: 'smooth' }); } else { window.scrollTo(0, 0); }
+    if (s === 'inicio') burbujas();
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-s]');
+    if (a) { e.preventDefault(); mostrar(a.getAttribute('data-s'), a.getAttribute('data-ir')); return; }
+    var sc = e.target.closest('[data-scroll]');
+    if (sc) { e.preventDefault(); var t = $(sc.getAttribute('data-scroll')); if (t) t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  /* ---------- Inicio: tabla periódica ---------- */
+  var ELEMENTOS = [
+    { s: 'planeacion', sim: 'Pe', n: 'Planeación Estratégica', d: 'Propósito, misión, visión, megas y valores del PL-DIE-001.', c: 'var(--amarillo)', f: 'Estrategia', dest: true },
+    { s: 'biblioteca', sim: 'Bi', n: 'Biblioteca', d: 'Normas, documentos y guías del sistema de gestión.', c: 'var(--azul)', f: 'Conocimiento' },
+    { s: 'herramientas', sim: 'He', n: 'Herramientas', d: 'Tableros y aplicaciones que miden y controlan.', c: 'var(--verde)', f: 'Gestión' },
+    { s: 'biblioteca', ir: 'almera', sim: 'Re', n: 'Recursos', d: 'Materiales útiles y prácticas seguras para tu trabajo.', c: 'var(--azul)', f: 'Conocimiento' },
+    { scroll: 'calendario', sim: 'Ca', n: 'Calendario CALIDOSO', d: 'Fechas clave de formación, auditoría y eventos.', c: 'var(--verde)', f: 'Gestión' },
+    { s: 'escuela', sim: 'Ec', n: 'Escuela de Calidad', d: 'Olas de formación Lean Six Sigma e INFLUEN[Ser].', c: '#E0B400', f: 'Personas' },
+    { url: SITIO + '/formularios-y-encuestas', sim: 'Fe', n: 'Formularios y Encuestas', d: 'La voz de los equipos y los usuarios.', c: '#E0B400', f: 'Personas' },
+    { s: 'experiencias', sim: 'Ex', n: 'Experiencias Exitosas', d: 'Concursos, simposios y foros donde MiRed se destaca.', c: 'var(--naranja)', f: 'Resultados' },
+    { url: SITIO + '/reconocimientos-institucionales', sim: 'Rc', n: 'Reconocimientos Institucionales', d: 'Logros y certificaciones de la institución.', c: 'var(--naranja)', f: 'Resultados' }
+  ];
+  var tabla = $('tabla');
+  if (tabla) tabla.innerHTML = ELEMENTOS.map(function (e, i) {
+    var attrs = e.url ? 'href="' + e.url + '" target="_blank" rel="noopener"' : e.scroll ? 'href="#" data-scroll="' + e.scroll + '"' : 'href="#" data-s="' + e.s + '"' + (e.ir ? ' data-ir="' + e.ir + '"' : '');
+    return '<a class="el' + (e.dest ? ' destacado' : '') + '" style="--c:' + e.c + '" ' + attrs + '><span class="num"><span>' + String(i + 1).padStart(2, '0') + '</span><span>' + e.f + '</span></span><span class="sim">' + e.sim + '</span><span class="nom">' + e.n + '</span><span class="des">' + e.d + '</span></a>';
+  }).join('');
+
+  /* ---------- Inicio: Calendario CALIDOSO ---------- */
+  var cal = $('cal');
+  if (cal) {
+    var prox = (D.calendario || []).filter(function (e) { return e.Fecha && fecha(e.Fecha) >= hoy; })
+      .sort(function (a, b) { return fecha(a.Fecha) - fecha(b.Fecha); }).slice(0, 8);
+    cal.innerHTML = prox.map(function (e, i) {
+      var d = fecha(e.Fecha); var t = String(e.Evento).split(' · ');
+      return '<div class="dia' + (i === 0 ? ' proximo' : '') + '"><div class="fecha"><b>' + d.getDate() + '</b><small>' + MES[d.getMonth()] + '</small></div><div><h3>' + esc(t.length > 1 ? t.slice(1).join(' · ') : t[0]) + '</h3><span class="tag">' + esc(e.Tipo) + '</span></div></div>';
+    }).join('');
+    var nota = $('cal-nota');
+    if (nota) nota.textContent = prox.length ? (prox[0].Tipo + ' · ' + (prox[0].Lugar || '')) : 'No hay eventos programados. Pronto se publican nuevas fechas.';
+  }
+
+  /* ---------- Noticias ---------- */
+  var bit = $('bit');
+  if (bit) bit.innerHTML = (D.noticias || []).map(function (n) {
+    return '<article class="entrada" style="--c:' + (COL[n.Color] || COL.azul) + '"><span class="eyebrow">' + esc(n.Etiqueta) + '</span><h3>' + esc(n.Titulo) + '</h3><p>' + esc(n.Texto) + '</p></article>';
+  }).join('');
+
+  /* ---------- Fórmula del Mes ---------- */
+  var fm = $('formula-mes');
+  if (fm) {
+    var activas = (D.formula || []).filter(function (p) { return p.Nombre && String(p.Activa || 'Sí').toLowerCase().charAt(0) !== 'n'; });
+    var f = activas[activas.length - 1];
+    if (f) {
+      var cual = String(f.Cualidades || '').split(',').map(function (c) { return c.trim(); }).filter(Boolean);
+      var ec = cual.map(function (c, i) { return '<li class="fe-term">' + esc(c) + '</li>' + (i < cual.length - 1 ? '<li class="fe-op" aria-hidden="true">+</li>' : ''); }).join('') + '<li class="fe-op" aria-hidden="true">=</li>' + (f.Resultado ? '<li class="fe-res">' + esc(f.Resultado) + '</li>' : '');
+      var foto = f.Foto && (window.IMG || {})[f.Foto];
+      fm.innerHTML = '<div class="wrap"><div class="cab"><div><span class="eyebrow">Fórmula del Mes · ' + esc(f.Mes) + '</span><h2 id="t-formula">Las personas detrás de la calidad</h2></div><p>Cada mes reconocemos a alguien de MiRed cuyas cualidades suman a nuestra cultura de mejora continua.</p></div>' +
+        '<article class="formula-card"><div class="formula-foto">' + (foto ? '<img src="' + foto + '" alt="' + esc(f.Nombre) + '">' : '<span class="formula-in" aria-hidden="true">' + esc((f.Nombre || '').trim().split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('')) + '</span>') + '</div>' +
+        '<div class="formula-cont"><ul class="formula-ec">' + ec + '</ul><h3 class="formula-nombre">' + esc(f.Nombre) + '</h3><p class="formula-cargo">' + esc(f.Cargo) + '</p>' + (f.Descripcion ? '<p class="formula-desc">' + esc(f.Descripcion) + '</p>' : '') + '</div></article></div>';
+      fm.hidden = false;
+    }
+  }
+
+  /* ---------- Instrumentos (Inicio y Herramientas) ---------- */
+  function instrumentos(id) {
+    var box = $(id); if (!box) return;
+    box.innerHTML = (D.herramientas || []).map(function (h) {
+      var u = String(h.URL || '').trim();
+      var tag = u ? 'a' : 'div';
+      return '<' + tag + ' class="inst"' + (u ? ' href="' + esc(u) + '" target="_blank" rel="noopener"' : '') + '><span><b>' + esc(h.Nombre) + '</b><small>' + esc(h.Descripcion) + '</small></span><span class="estado pill ' + (u ? 'on ok' : 'off') + '">' + (u ? 'Abrir' : 'Por conectar') + '</span></' + tag + '>';
+    }).join('');
+  }
+  instrumentos('inst'); instrumentos('inst2');
+
+  /* ---------- Biblioteca ---------- */
+  var est = $('est');
+  if (est) est.innerHTML = (D.areas || []).map(function (a, i) {
+    var mats = (D.biblioteca || []).filter(function (m) { return m.Area === a.Area && m.Material; });
+    var lis = mats.map(function (m) {
+      return '<li><a href="' + esc(m.URL) + '" target="_blank" rel="noopener"><span>' + esc(m.Material) + '</span><em>Abrir en Drive ↗</em></a></li>';
+    }).join('');
+    var st = mats.length ? '<span class="pill ok">' + mats.length + ' materiales</span>' : '<span class="pill pronto">En construcción</span>';
+    return '<article class="estante" style="--c:' + (COL[a.Color] || COL.azul) + '"><div class="lomo"><span>' + String(i + 1).padStart(2, '0') + '</span></div><div class="cont"><h3>' + esc(a.Area) + '</h3>' + (lis ? '<ul>' + lis + '</ul>' : '') + (a.Texto ? '<p>' + esc(a.Texto) + '</p>' : '') + st + '</div></article>';
+  }).join('');
+  var alm = $('almera');
+  if (alm) { var h0 = (D.herramientas || []).filter(function (h) { return h.Nombre === 'ALMERA'; })[0]; alm.href = (h0 && h0.URL) || 'https://sgi.almeraim.com/sgi/?conid=sgimiredips'; alm.classList.remove('off'); alm.textContent = 'Ingresar a ALMERA'; }
+
+  /* ---------- Escuela de Calidad ---------- */
+  var ol = $('mods');
+  if (ol) {
+    var mods = (D.calendario || []).filter(function (e) { return e.Tipo === 'Escuela de Calidad'; }).sort(function (a, b) { return fecha(a.Fecha) - fecha(b.Fecha); });
+    var hechos = 0, px = -1;
+    ol.innerHTML = mods.map(function (m, i) {
+      var d = fecha(m.Fecha), done = d < hoy; if (done) hechos++; else if (px < 0) px = i;
+      var t = String(m.Evento).split(' · ');
+      return '<li class="' + (done ? 'hecho' : (px === i ? 'proximo' : '')) + '"><div class="f"><b>' + d.getDate() + '</b><small>' + MES[d.getMonth()] + '</small></div><div><span class="m">' + esc(t.length > 1 ? t[0] : '') + '</span><h3>' + esc(t.length > 1 ? t.slice(1).join(' · ') : t[0]) + '</h3></div><span class="est">' + (done ? 'Realizado' : (px === i ? 'Próxima clase' : 'Programado')) + '</span></li>';
+    }).join('');
+    var pct = mods.length ? Math.round(hechos / mods.length * 100) : 0;
+    if ($('pct')) $('pct').textContent = pct + '%';
+    if ($('barra')) setTimeout(function () { $('barra').style.width = pct + '%'; }, 200);
+    if ($('hechos')) $('hechos').textContent = hechos + ' de ' + mods.length + ' sesiones realizadas';
+  }
+
+  /* ---------- Experiencias ---------- */
+  var ex = $('exp');
+  if (ex) {
+    var xs = D.experiencias || [], porAnio = {};
+    xs.forEach(function (x) { (porAnio[x['Año']] = porAnio[x['Año']] || []).push(x); });
+    var anios = Object.keys(porAnio).sort(function (a, b) { return b - a; });
+    ex.innerHTML = anios.map(function (y) {
+      var l = porAnio[y];
+      return '<div class="anio"><div class="marca"><b>' + y + '</b><span>' + l.length + (l.length === 1 ? ' experiencia' : ' experiencias') + '</span></div><div class="fichas">' + l.map(function (x) {
+        var c = /OES/i.test(x.Escenario) ? 'var(--naranja)' : /IHI/i.test(x.Escenario) ? 'var(--verde)' : 'var(--azul)';
+        var fx = ((D.fotos || {}).experiencias || {})[x['Año'] + ' · ' + x.Titulo] || [];
+        var cap = esc(x['Año'] + ' · ' + x.Titulo);
+        var portada = fx.length ? '<button type="button" class="portada" data-foto="' + fx[0].id + '" data-cap="' + cap + '"><img data-fid="' + fx[0].id + '" alt="' + cap + '"></button>' : '';
+        var mas = fx.length > 1 ? rollo(fx.slice(1), x['Año'] + ' · ' + x.Titulo, 'mini') : '';
+        var ver = (x.Enlace && fx.length) ? '<a class="ver" href="' + esc(x.Enlace) + '" target="_blank" rel="noopener">Ver presentación →</a>' : '';
+        var inner = portada + '<span class="org">' + esc(String(x.Escenario).toUpperCase()) + '</span><h3>' + esc(x.Titulo) + '</h3><p>' + esc(x.Lugar || 'MiRed IPS') + '</p>' + mas + ver;
+        return (x.Enlace && !fx.length) ? '<a class="exp" style="--c:' + c + ';text-decoration:none;color:inherit;display:block" href="' + esc(x.Enlace) + '" target="_blank" rel="noopener">' + inner + '</a>' : '<article class="exp" style="--c:' + c + '">' + inner + '</article>';
+      }).join('') + '</div></div>';
+    }).join('');
+    var st2 = $('expstats');
+    if (st2 && xs.length) {
+      var oes = xs.filter(function (x) { return /OES/i.test(x.Escenario); }).length;
+      st2.innerHTML = '<div><b>' + xs.length + '</b><span>experiencias presentadas</span></div><div><b>' + anios.length + '</b><span>años con participación, ' + anios[anios.length - 1] + '–' + anios[0] + '</span></div><div><b>' + oes + '</b><span>en el Foro OES de Cartagena</span></div>';
+    }
+  }
+
+  /* ---------- Burbujas del hero ---------- */
+  var burbujasOn = false;
+  function burbujas() {
+    if (burbujasOn) return;
+    var cv = $('burbujas');
+    if (!cv || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    burbujasOn = true;
+    var ctx = cv.getContext('2d'), W, H, B = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function rs() { W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function nueva(y) { return { x: Math.random() * W, y: y == null ? H + 20 : y, r: 2 + Math.random() * 9, v: .25 + Math.random() * .7, o: Math.random() * 6.28, g: Math.random() < .35 }; }
+    rs(); for (var i = 0; i < 46; i++) B.push(nueva(Math.random() * H));
+    window.addEventListener('resize', rs);
+    (function loop() {
+      if (actual === 'inicio') {
+        if (!W) rs();
+        ctx.clearRect(0, 0, W, H);
+        B.forEach(function (b, i) {
+          b.y -= b.v; b.o += .02; var x = b.x + Math.sin(b.o) * 8;
+          ctx.beginPath(); ctx.arc(x, b.y, b.r, 0, 6.283);
+          ctx.fillStyle = b.g ? 'rgba(57,168,53,.22)' : 'rgba(255,255,255,.07)'; ctx.fill();
+          ctx.strokeStyle = b.g ? 'rgba(120,220,110,.35)' : 'rgba(255,255,255,.14)'; ctx.lineWidth = 1; ctx.stroke();
+          if (b.y < -20) B[i] = nueva();
+        });
+      }
+      requestAnimationFrame(loop);
+    })();
+  }
+
+  /* ---------- Herramientas: ejemplos didácticos ---------- */
+  var AZ = '#006081', VE = '#39A835', NA = '#FF7A3D', AM = '#E0B400', TI = '#03222E', SU = '#4F6B76', LI = '#C9D8DE';
+  function svg(inner, h) { return '<svg viewBox="0 0 400 ' + (h || 230) + '" role="img" font-family="Nunito Sans, system-ui, sans-serif">' + inner + '</svg>'; }
+  function tx(x, y, t, o) { o = o || {}; return '<text x="' + x + '" y="' + y + '" font-size="' + (o.s || 11) + '" fill="' + (o.c || TI) + '" text-anchor="' + (o.a || 'start') + '" font-weight="' + (o.w || 600) + '">' + t + '</text>'; }
+  function ishikawa() {
+    var g = '<line x1="20" y1="115" x2="300" y2="115" stroke="' + AZ + '" stroke-width="4"/><polygon points="300,105 318,115 300,125" fill="' + AZ + '"/>';
+    g += '<rect x="320" y="88" width="74" height="54" rx="8" fill="' + NA + '"/>' + tx(357, 110, 'Demora en', { a: 'middle', c: '#fff', s: 10.5 }) + tx(357, 124, 'urgencias', { a: 'middle', c: '#fff', s: 10.5 });
+    var cat = [['Personal', 'Turnos rotativos', 30, 1], ['Métodos', 'Triage variable', 132, 1], ['Máquinas', 'Sistema lento', 230, 1], ['Materiales', 'Insumos agotados', 30, -1], ['Medición', 'Sin registro', 132, -1], ['Entorno', 'Sala saturada', 230, -1]];
+    cat.forEach(function (c) {
+      var arriba = c[3] > 0;
+      g += '<line x1="' + c[2] + '" y1="' + (arriba ? 42 : 188) + '" x2="' + (c[2] + 40) + '" y2="115" stroke="' + SU + '" stroke-width="2"/>';
+      g += tx(c[2] - 8, arriba ? 20 : 212, c[0], { w: 800, c: AZ, s: 10.5 });
+      g += tx(c[2] - 8, arriba ? 33 : 225, c[1], { s: 9, c: SU, w: 600 });
+    });
+    return svg(g, 232);
+  }
+  function hoja() {
+    var d = [['Mañana', '||||  |', 6], ['Tarde', '||||', 4], ['Noche', '||||  ||||  |', 11]];
+    var g = tx(20, 26, 'Caídas de pacientes registradas · una semana', { w: 800, s: 12 });
+    g += '<rect x="20" y="40" width="360" height="30" fill="' + AZ + '" rx="6"/>' + tx(34, 60, 'Turno', { c: '#fff', w: 800 }) + tx(140, 60, 'Conteo', { c: '#fff', w: 800 }) + tx(366, 60, 'Total', { c: '#fff', w: 800, a: 'end' });
+    d.forEach(function (r, i) {
+      var y = 70 + i * 44;
+      g += '<rect x="20" y="' + y + '" width="360" height="44" fill="' + (i % 2 ? '#fff' : '#EAF2F5') + '"/>';
+      g += tx(34, y + 27, r[0], { s: 12 }) + tx(140, y + 28, r[1], { s: 16, c: VE, w: 800 }) + tx(366, y + 28, r[2], { s: 14, w: 800, a: 'end' });
+    });
+    g += tx(20, 222, 'El turno de la noche concentra la mayoría de los casos.', { s: 10.5, c: SU });
+    return svg(g);
+  }
+  function control() {
+    var v = [21, 24, 19, 23, 22, 26, 20, 23, 33, 22, 21, 24, 19, 22, 23];
+    var x0 = 72, x1 = 390, y = function (m) { return 195 - (m - 10) * 6.5; };
+    var g = tx(40, 18, 'Minutos de espera para triage · 15 días', { w: 800, s: 12 });
+    [['LCS 30', 30, NA], ['Media 22', 22, VE], ['LCI 14', 14, NA]].forEach(function (l) {
+      g += '<line x1="' + x0 + '" y1="' + y(l[1]) + '" x2="' + x1 + '" y2="' + y(l[1]) + '" stroke="' + l[2] + '" stroke-width="1.5" stroke-dasharray="' + (l[1] === 22 ? '0' : '5 4') + '"/>' + tx(x0 - 4, y(l[1]) + 4, l[0], { s: 9, a: 'end', c: l[2] });
+    });
+    var pts = v.map(function (m, i) { return (x0 + 10 + i * 21) + ',' + y(m); });
+    g += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + AZ + '" stroke-width="2"/>';
+    v.forEach(function (m, i) { var fuera = m > 30; g += '<circle cx="' + (x0 + 10 + i * 21) + '" cy="' + y(m) + '" r="' + (fuera ? 6 : 3.5) + '" fill="' + (fuera ? NA : AZ) + '"/>'; });
+    g += tx(x0 + 10 + 8 * 21, y(33) - 10, 'Fuera de control', { s: 9.5, c: NA, a: 'middle', w: 800 });
+    return svg(g, 215);
+  }
+  function flujo() {
+    function caja(x, y, w, t, c, r) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="30" rx="' + (r || 8) + '" fill="' + c + '"/>' + tx(x + w / 2, y + 19, t, { a: 'middle', c: '#fff', s: 10.5 }); }
+    function fl(x1, y1, x2, y2) { return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + SU + '" stroke-width="1.8" marker-end="url(#fx)"/>'; }
+    var g = '<defs><marker id="fx" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="' + SU + '"/></marker></defs>';
+    g += caja(8, 14, 128, 'Llegada del usuario', VE, 15) + fl(136, 29, 164, 29) + caja(166, 14, 76, 'Triage', AZ);
+    g += fl(242, 29, 268, 29) + '<polygon points="320,4 372,29 320,54 268,29" fill="' + AM + '"/>' + tx(320, 27, '¿Prioridad', { a: 'middle', s: 9.5 }) + tx(320, 39, 'I o II?', { a: 'middle', s: 9.5 });
+    g += fl(320, 54, 320, 92) + tx(326, 76, 'Sí', { s: 10, c: VE, w: 800 }) + caja(262, 94, 116, 'Atención inmediata', NA);
+    g += fl(268, 29, 268, 29) + '<path d="M300,44 L200,92" stroke="' + SU + '" stroke-width="1.8" fill="none" marker-end="url(#fx)"/>' + tx(232, 66, 'No', { s: 10, c: NA, w: 800 }) + caja(120, 94, 110, 'Sala de espera', AZ);
+    g += fl(175, 124, 175, 150) + caja(110, 152, 130, 'Consulta médica', AZ) + fl(320, 124, 240, 160);
+    g += fl(175, 182, 175, 196) + caja(125, 198, 100, 'Egreso', VE, 15);
+    return svg(g, 235);
+  }
+  function histograma() {
+    var b = [['0-10', 4], ['10-20', 12], ['20-30', 18], ['30-40', 9], ['40-50', 4], ['50-60', 2]];
+    var g = tx(40, 18, 'Tiempo de espera en consulta externa · 49 usuarios', { w: 800, s: 12 });
+    g += '<line x1="40" y1="190" x2="390" y2="190" stroke="' + LI + '"/>';
+    b.forEach(function (r, i) {
+      var h = r[1] * 8, x = 45 + i * 57;
+      g += '<rect x="' + x + '" y="' + (190 - h) + '" width="55" height="' + h + '" fill="' + (i === 2 ? VE : AZ) + '"/>' + tx(x + 27, 185 - h, r[1], { a: 'middle', s: 10, w: 800 }) + tx(x + 27, 204, r[0], { a: 'middle', s: 9.5, c: SU });
+    });
+    g += tx(215, 222, 'minutos', { a: 'middle', s: 10, c: SU });
+    return svg(g);
+  }
+  function pareto() {
+    var d = [['Oportunidad de citas', 42], ['Trato del personal', 21], ['Trámites', 14], ['Infraestructura', 9], ['Otros', 6]];
+    var tot = 92, acc = 0, x0 = 40, g = tx(40, 18, 'Causas de PQRS en un trimestre · 92 casos', { w: 800, s: 12 });
+    var yb = function (v) { return 180 - v * 3.3; }, yp = function (p) { return 180 - p * 1.45; };
+    g += '<line x1="' + x0 + '" y1="' + yp(80) + '" x2="390" y2="' + yp(80) + '" stroke="' + NA + '" stroke-dasharray="4 4"/>' + tx(390, yp(80) - 4, '80 %', { a: 'end', s: 9.5, c: NA, w: 800 });
+    var pts = [];
+    d.forEach(function (r, i) {
+      var x = x0 + 8 + i * 68; acc += r[1];
+      g += '<rect x="' + x + '" y="' + yb(r[1]) + '" width="54" height="' + (180 - yb(r[1])) + '" fill="' + (i < 2 ? AZ : '#7FA9B8') + '"/>' + tx(x + 27, yb(r[1]) - 4, r[1], { a: 'middle', s: 10, w: 800 });
+      var nm = r[0].split(' '); g += tx(x + 27, 195, nm[0], { a: 'middle', s: 9, c: SU }) + (nm[1] ? tx(x + 27, 206, nm.slice(1).join(' '), { a: 'middle', s: 9, c: SU }) : '');
+      pts.push((x + 27) + ',' + yp(acc / tot * 100));
+    });
+    g += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + VE + '" stroke-width="2.5"/>';
+    pts.forEach(function (p) { var q = p.split(','); g += '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="3.5" fill="' + VE + '"/>'; });
+    g += tx(40, 224, 'Dos causas explican el 68 % de las PQRS: ahí se prioriza.', { s: 10.5, c: SU });
+    return svg(g, 232);
+  }
+  function dispersion() {
+    var p = [[2, 1], [4, 2], [5, 1], [6, 3], [8, 3], [9, 4], [10, 5], [12, 5], [13, 7], [14, 6], [16, 8], [18, 9]];
+    var x = function (h) { return 50 + h * 18; }, y = function (e) { return 185 - e * 17; };
+    var g = tx(50, 18, 'Horas extra semanales vs. errores de registro', { w: 800, s: 12 });
+    g += '<line x1="50" y1="185" x2="390" y2="185" stroke="' + LI + '"/><line x1="50" y1="30" x2="50" y2="185" stroke="' + LI + '"/>';
+    g += '<line x1="' + x(1) + '" y1="' + y(0.6) + '" x2="' + x(18.5) + '" y2="' + y(9.2) + '" stroke="' + NA + '" stroke-width="1.5" stroke-dasharray="5 4"/>';
+    p.forEach(function (q) { g += '<circle cx="' + x(q[0]) + '" cy="' + y(q[1]) + '" r="5" fill="' + AZ + '" fill-opacity=".85"/>'; });
+    g += tx(220, 205, 'Horas extra por semana', { a: 'middle', s: 10, c: SU }) + tx(14, 110, 'Errores', { s: 10, c: SU, a: 'middle' }).replace('<text', '<text transform="rotate(-90 14 110)"');
+    g += tx(220, 224, 'A más horas extra, más errores: relación positiva.', { a: 'middle', s: 10.5, c: SU });
+    return svg(g, 232);
+  }
+  var EJ = [
+    ['01', 'Diagrama de Causa-Efecto', 'Caso: demora en la atención de urgencias', 'Se escribe el problema en la cabeza del pez y en cada espina una categoría de causas. El equipo discute y ubica las causas posibles antes de actuar.', ishikawa],
+    ['02', 'Hoja de verificación', 'Caso: caídas de pacientes por turno', 'Cada vez que ocurre un evento se marca una raya en su fila. Al final de la semana el conteo muestra dónde se concentra el problema.', hoja],
+    ['03', 'Gráfico de control', 'Caso: minutos de espera para triage', 'La línea verde es el promedio y las naranjas son los límites. Un punto por fuera de los límites avisa que algo especial pasó ese día.', control],
+    ['04', 'Diagrama de flujo', 'Caso: ruta del usuario en urgencias', 'Cada caja es un paso y el rombo es una decisión. Dibujar el proceso ayuda a ver esperas, reprocesos y pasos que sobran.', flujo],
+    ['05', 'Histograma', 'Caso: tiempos de espera en consulta externa', 'Agrupa los datos en rangos y muestra cuántos casos caen en cada uno. Aquí la mayoría espera entre 20 y 30 minutos.', histograma],
+    ['06', 'Diagrama de Pareto', 'Caso: causas de PQRS del trimestre', 'Ordena las causas de mayor a menor y suma su porcentaje. Las primeras barras, antes del 80 %, son las que más impacto tienen.', pareto],
+    ['07', 'Diagrama de dispersión', 'Caso: horas extra y errores de registro', 'Cada punto es una persona. Si los puntos suben juntos, las dos variables están relacionadas y vale la pena investigar.', dispersion]
+  ];
+  var ejBox = $('ejemplos');
+  if (ejBox) ejBox.innerHTML = EJ.map(function (e) {
+    return '<article class="ejm"><span class="n">' + e[0] + ' · Ejemplo</span><h3>' + e[1] + '</h3><p class="caso">' + e[2] + '</p>' + e[4]() + '<p>' + e[3] + '</p><span class="dato">Ejemplo didáctico · datos ficticios</span></article>';
+  }).join('');
+
+  /* ---------- Fotos: visor ---------- */
+  /* Las fotos se sirven desde el script (data URI): dentro de Google Sites el navegador bloquea las cookies de Drive y las miniaturas salen rotas. */
+  var FCACHE = {}, FPEND = {};
+  function cargarFoto(id, cb) {
+    if (FCACHE[id]) return cb(FCACHE[id]);
+    if (FPEND[id]) { FPEND[id].push(cb); return; }
+    FPEND[id] = [cb];
+    var fin = function (src) { if (src) FCACHE[id] = src; var l = FPEND[id] || []; delete FPEND[id]; l.forEach(function (f) { f(src); }); };
+    if (window.google && google.script && google.script.run) google.script.run.withSuccessHandler(fin).withFailureHandler(function () { fin(''); }).fotoB64(id);
+    else fin('');
+  }
+  function img(id, alt) { return '<img data-fid="' + esc(id) + '" alt="' + esc(alt || '') + '">'; }
+  function pintar(im) { cargarFoto(im.getAttribute('data-fid'), function (s) { if (s) im.src = s; im.classList.add('ok'); }); }
+  var obs = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { obs.unobserve(e.target); pintar(e.target); } }); }, { rootMargin: '400px' }) : null;
+  function vigilar(root) { var l = (root || document).querySelectorAll('img[data-fid]:not([data-v])'); for (var i = 0; i < l.length; i++) { l[i].setAttribute('data-v', '1'); if (obs) obs.observe(l[i]); else pintar(l[i]); } }
+  /* Rollo de fotos: carrusel horizontal con flechas, deslizamiento y avance automático. */
+  function rollo(fs, cap, extra) {
+    if (!fs || !fs.length) return '';
+    return '<div class="rollo' + (extra ? ' ' + extra : '') + '"><button type="button" class="rollo-b prev" aria-label="Anterior">‹</button><div class="rollo-p">' + fs.map(function (f) { var pie = f.d || ''; return '<button type="button" class="rollo-i' + (pie ? ' con-pie' : '') + '" data-foto="' + esc(f.id) + '" data-cap="' + esc(pie || cap) + '">' + img(f.id, pie || cap) + (pie ? '<span class="rollo-c">' + esc(pie) + '</span>' : '') + '</button>'; }).join('') + '</div><button type="button" class="rollo-b next" aria-label="Siguiente">›</button><span class="rollo-n">' + fs.length + (fs.length === 1 ? ' foto' : ' fotos') + '</span></div>';
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.rollo-b'); if (!b) return;
+    var p = b.parentNode.querySelector('.rollo-p');
+    p.scrollBy({ left: (b.classList.contains('next') ? 1 : -1) * p.clientWidth * 0.8, behavior: 'smooth' });
+  });
+  setInterval(function () {
+    var l = document.querySelectorAll('.pg:not([hidden]) .rollo-p');
+    for (var i = 0; i < l.length; i++) {
+      var p = l[i]; if (p.matches(':hover') || p.scrollWidth <= p.clientWidth + 4) continue;
+      var fin = p.scrollLeft + p.clientWidth >= p.scrollWidth - 4;
+      p.scrollTo({ left: fin ? 0 : p.scrollLeft + p.clientWidth * 0.8, behavior: 'smooth' });
+    }
+  }, 5000);
+  var lb = $('lb');
+  function abrir(id, cap) { var im = $('lbimg'); im.removeAttribute('src'); $('lbcap').textContent = cap || ''; lb.hidden = false; cargarFoto(id, function (s) { if (s) im.src = s; }); }
+  if (lb) {
+    $('lbx').addEventListener('click', function () { lb.hidden = true; });
+    lb.addEventListener('click', function (e) { if (e.target === lb) lb.hidden = true; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.hidden = true; });
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-foto]'); if (b) abrir(b.getAttribute('data-foto'), b.getAttribute('data-cap')); });
+  }
+  var FOTOS = D.fotos || { escuela: {}, experiencias: {} };
+
+  /* ---------- Escuela: memorias por ola ---------- */
+  var olBox = $('olas');
+  if (olBox) olBox.innerHTML = (D.olas || []).slice().sort(function (a, b) { return b['Año'] - a['Año']; }).map(function (o) {
+    var fs = FOTOS.escuela[String(o['Año'])] || [];
+    var gal = fs.length ? rollo(fs, o.Ola + ' · ' + o['Año']) : '<div class="vacia">Aún no hay fotos. Súbelas a la carpeta "Escuela de Calidad / ' + o['Año'] + '" en Drive y aparecerán aquí.</div>';
+    var vid = o.Enlace ? '<a class="ver" href="' + esc(o.Enlace) + '" target="_blank" rel="noopener">▶ Ver video</a>' : '';
+    return '<div class="ola2' + (String(o.Estado).toLowerCase() === 'en curso' ? ' actual' : '') + '"><div class="anio"><b>' + o['Año'] + '</b><span>' + esc(o.Ola) + '</span><small>' + esc(o.Descripcion || '') + '</small>' + vid + '</div><div class="galeria-r">' + gal + '</div></div>';
+  }).join('') + ((FOTOS.escuela['General'] || []).length ? '<div class="ola2"><div class="anio"><b>★</b><span>Momentos de la Escuela</span><small>Cinturones, certificados y aprendizaje en equipo.</small></div><div class="galeria-r">' + rollo(FOTOS.escuela['General'], 'Momentos de la Escuela de Calidad') + '</div></div>' : '');
+
+  /* ---------- Rollos de fotos por módulo (carpeta Drive "QualityLab · App / <Módulo> / <Álbum>") ---------- */
+  /* Álbumes de iconos reemplazados por Píldoras Calidosas (no se muestran como fotos). */
+  var OCULTOS = ['herramientas/Las 7 herramientas de la calidad'];
+  var RTIT = { inicio: 'La calidad en acción', planeacion: 'Planeación en imágenes', biblioteca: 'Biblioteca en imágenes', herramientas: 'Herramientas en imágenes' };
+  var rbs = document.querySelectorAll('[data-rollos]');
+  for (var ri = 0; ri < rbs.length; ri++) {
+    var mod = rbs[ri].getAttribute('data-rollos'), alb = FOTOS[mod] || {};
+    var ks = Object.keys(alb).filter(function (k) { return (alb[k] || []).length && OCULTOS.indexOf(mod + '/' + k) < 0; }).sort(function (a, b) { return b.localeCompare(a, 'es', { numeric: true }); });
+    if (!ks.length) continue;
+    rbs[ri].innerHTML = '<div class="wrap"><div class="cab"><div><span class="eyebrow">Rollos de fotos</span><h2>' + esc(RTIT[mod] || 'Memorias') + '</h2></div><p>Desliza o toca una foto para verla en grande.</p></div>' + ks.map(function (k) { var dA = (FOTOS._desc || {})[mod + '/' + k]; return '<div class="album"><h3>' + esc(k) + '</h3>' + (dA ? '<p class="album-d">' + esc(dA).replace(/\n+/g, '<br><br>') + '</p>' : '') + rollo(alb[k], k) + '</div>'; }).join('') + '</div>';
+    rbs[ri].hidden = false;
+  }
+  /* ---------- Escuela: mosaico homenaje (foto 2023_escuela_02.jpg) ---------- */
+  var hBox = $('homenaje');
+  if (hBox) {
+    var hf = null;
+    Object.keys(FOTOS.escuela || {}).forEach(function (a) { (FOTOS.escuela[a] || []).forEach(function (f) { if (!hf && f.n === '2023_escuela_02.jpg') hf = f; }); });
+    if (hf) {
+      var hCap = 'Un día lo conversamos, lo soñamos y lo hicimos realidad. En homenaje al Dr. Rómulo Rodado Villa.';
+      hBox.innerHTML = '<div class="wrap"><div class="mosaico">' +
+        '<button type="button" class="m-foto" data-foto="' + esc(hf.id) + '" data-cap="' + esc(hCap) + '">' + img(hf.id, hCap) + '</button>' +
+        '<div class="m-frase"><p><span class="m-q">“</span>Un día lo <b>conversamos</b>, lo <b>soñamos</b> y lo <b>hicimos realidad</b>.<span class="m-q">”</span></p></div>' +
+        '<div class="m-dedica"><small>En homenaje al</small><strong>Dr. Rómulo Rodado Villa</strong></div>' +
+        '</div></div>';
+      hBox.hidden = false;
+    }
+  }
+  vigilar(document);
+
+
+  /* ---------- Píldoras Calidosas: slides motivacionales ---------- */
+  function secc(p) { return String(p.Seccion || 'General').trim().toLowerCase(); }
+  var PILT = (D.pildoras || []).filter(function (p) { return p.Mensaje && String(p.Activa || 'Sí').toLowerCase().charAt(0) !== 'n'; });
+  function pilDe(g) { return PILT.filter(function (p) { return secc(p) === g; }).sort(function (a, b) { return (Number(a.Orden) || 99) - (Number(b.Orden) || 99); }); }
+  var LEMA = '¡La mejora comienza contigo!';
+  var KP = []; /* Las slides no llevan personaje: una sola aparición de Killo por página. */
+  var reducido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sliders = document.querySelectorAll('[data-pslider]');
+  for (var si = 0; si < sliders.length; si++) (function (box) {
+    var PIL = pilDe(box.getAttribute('data-pslider') || 'general');
+    if (!PIL.length) PIL = pilDe('general');
+    if (!PIL.length) { box.closest('section').hidden = true; return; }
+    var n = PIL.length, tot = String(n).padStart(2, '0');
+    box.innerHTML = '<div class="avance"></div><div class="pista" aria-live="polite">' + PIL.map(function (p, i) {
+      return '<article class="pslide" role="group" aria-roledescription="diapositiva" aria-label="' + (i + 1) + ' de ' + n + '" style="--c:' + (COL[String(p.Color).toLowerCase()] || 'var(--verde)') + '">' +
+        '<div class="banda"></div><div class="cuerpo">' + ((window.IMG || {})[KP[i % KP.length]] ? '<img class="killo" alt="" src="' + IMG[KP[i % KP.length]] + '">' : '<span class="gigante" aria-hidden="true">' + String(i + 1).padStart(2, '0') + '</span>') + '<span class="num">Píldora Calidosa ' + String(i + 1).padStart(2, '0') + ' / ' + tot + '</span>' +
+        '<h3>' + esc(p.Mensaje) + '</h3>' + (p.Detalle ? '<p>' + esc(p.Detalle) + '</p>' : '') + '</div></article>';
+    }).join('') + '</div><div class="ctrl"><div class="puntos">' + PIL.map(function (p, i) {
+      return '<button type="button" aria-label="Ir a la píldora ' + (i + 1) + '"></button>';
+    }).join('') + '</div><button type="button" class="flecha" data-d="-1" aria-label="Píldora anterior">‹</button><button type="button" class="flecha" data-d="1" aria-label="Píldora siguiente">›</button></div>';
+    var sl = box.querySelectorAll('.pslide'), pts = box.querySelectorAll('.puntos button'), bar = box.querySelector('.avance');
+    var k = 0, t = null, pausa = false, DUR = 8000;
+    box.style.setProperty('--dur', DUR / 1000 + 's');
+    function ir(x) {
+      k = (x + n) % n;
+      for (var i = 0; i < n; i++) { sl[i].classList.toggle('on', i === k); sl[i].setAttribute('aria-hidden', i === k ? 'false' : 'true'); pts[i].setAttribute('aria-current', i === k ? 'true' : 'false'); }
+      reiniciar();
+    }
+    function reiniciar() {
+      clearTimeout(t); box.classList.remove('corre'); void bar.offsetWidth;
+      if (reducido || pausa || n < 2 || box.closest('.pg').hidden) return;
+      box.classList.add('corre'); t = setTimeout(function () { ir(k + 1); }, DUR);
+    }
+    box.addEventListener('click', function (e) {
+      var f = e.target.closest('.flecha'); if (f) return ir(k + Number(f.getAttribute('data-d')));
+      var b = e.target.closest('.puntos button'); if (b) ir([].indexOf.call(pts, b));
+    });
+    box.addEventListener('mouseenter', function () { pausa = true; reiniciar(); });
+    box.addEventListener('mouseleave', function () { pausa = false; reiniciar(); });
+    box.addEventListener('focusin', function () { pausa = true; reiniciar(); });
+    box.addEventListener('focusout', function () { pausa = false; reiniciar(); });
+    box.tabIndex = 0;
+    box.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') ir(k + 1); if (e.key === 'ArrowLeft') ir(k - 1); });
+    var x0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) { if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) ir(k + (dx < 0 ? 1 : -1)); x0 = null; });
+    box.__reiniciar = reiniciar;
+    ir(0);
+  })(sliders[si]);
+
+  /* ---------- Mini píldoras en los encabezados ---------- */
+  var minis = document.querySelectorAll('[data-minipil]');
+  for (var mi = 0; mi < minis.length; mi++) (function (box) {
+    var sec = box.getAttribute('data-minipil');
+    var ps = PILT.filter(function (p) { return secc(p) === sec; }).sort(function (a, b) { return (Number(a.Orden) || 99) - (Number(b.Orden) || 99); });
+    if (!ps.length) { box.hidden = true; return; }
+    box.innerHTML = ps.map(function (p) {
+      return '<div class="mp" style="--c:' + (COL[String(p.Color).toLowerCase()] || 'var(--verde)') + '"><small>Píldora Calidosa</small><b>' + esc(p.Mensaje) + '</b></div>';
+    }).join('') + (ps.length > 1 ? '<div class="mpts" aria-hidden="true">' + ps.map(function () { return '<i></i>'; }).join('') + '</div>' : '');
+    var it = box.querySelectorAll('.mp'), dt = box.querySelectorAll('.mpts i'), k = 0;
+    function ver(x) { k = x % it.length; for (var i = 0; i < it.length; i++) { it[i].classList.toggle('on', i === k); it[i].setAttribute('aria-hidden', i === k ? 'false' : 'true'); if (dt[i]) dt[i].classList.toggle('on', i === k); } }
+    ver(0);
+    if (it.length > 1 && !reducido) setInterval(function () { if (!box.closest('.pg').hidden && !box.matches(':hover')) ver(k + 1); }, 6500);
+  })(minis[mi]);
+  function reactivarPildoras() { if (!sliders) return; for (var q = 0; q < sliders.length; q++) if (sliders[q].__reiniciar) sliders[q].__reiniciar(); }
+
+  mostrar(INICIAL || 'inicio');
+  reactivarPildoras();
+})();
+</script>

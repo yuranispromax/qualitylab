@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&family=JetBrains+Mono:wght@500&display=swap">
+<?!= include('Estilos'); ?>
+</head>
+<body>
+<? if (nav) { ?><nav class="topnav" id="topnav" aria-label="Secciones de QualityLab"><div class="in"><img data-img="logo_w" alt="QualityLab" data-s="inicio"><div class="links"><a href="#" data-s="inicio">Inicio</a><a href="#" data-s="planeacion">Planeación Estratégica</a><a href="#" data-s="biblioteca">Biblioteca</a><a href="#" data-s="herramientas">Herramientas</a><a href="#" data-s="escuela">Escuela de Calidad</a><a href="#" data-s="experiencias">Experiencias Exitosas</a></div></div></nav><? } ?>
+<main>
+<div class="pg pg-inicio" data-sec="inicio" hidden>
+<header class="hero">
+  <canvas id="burbujas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <div class="aliados top"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></div><img class="logo" data-img="logo_w" alt="QualityLab, Tu Biblioteca de Calidad">
+      <p class="lema">Un laboratorio vivo donde <em>toda MiRed</em> aprende, innova, comparte y mejora.</p>
+      <p class="intro">El punto de encuentro de la calidad en salud en MIRED IPS S.A.S.: la planeación estratégica, las herramientas del sistema de gestión, la formación y los resultados que nos distinguen, en un solo lugar.</p>
+      <div class="acciones">
+        <a class="btn primario" data-s="herramientas" href="#">Entrar al laboratorio</a>
+        <a class="btn fantasma" data-scroll="calendario" href="#">Calendario CALIDOSO</a>
+      </div>
+    </div>
+    <div class="lado-hero"><aside class="minipil" data-minipil="inicio" aria-label="Píldora Calidosa"></aside><aside class="ficha ruta-t" aria-label="Ruta de la calidad">
+      <div class="ruta-cab"><span class="eyebrow">Ruta de la calidad</span><span class="ruta-rango">2018 → 2026</span></div>
+      <ol class="ruta-els mini"><li class="rel" style="--c:var(--azul)"><span class="cuad"><b>2018</b><span class="sim">Vi</span></span><span class="nom">Visión<small>fundacional</small></span></li><li class="rel" style="--c:var(--verde)"><span class="cuad"><b>2023</b><span class="sim">Cr</span></span><span class="nom">Certificación<small>ISO 9001</small></span></li><li class="rel logro" style="--c:var(--verde)"><span class="cuad"><b>2026</b><span class="sim">Rt</span></span><span class="nom">Recertificación<small>ISO 9001</small></span></li><li class="rel logro" style="--c:var(--naranja)"><span class="cuad"><b>2026</b><span class="sim">Cs</span></span><span class="nom">Certificación<small>ISO 7101</small></span></li></ol>
+      <p class="ruta-pie"><i></i>24 de julio de 2026 · doble logro</p>
+    </aside></div>
+  </div>
+</header>
+
+<section class="seccion" aria-labelledby="t-tabla">
+  <div class="wrap">
+    <div class="cab">
+      <div><span class="eyebrow">Tabla periódica de la calidad</span><h2 id="t-tabla">Los elementos del laboratorio</h2></div>
+      <p>Cada elemento es un espacio de QualityLab. Combinados, forman la cultura de calidad de MiRed.</p>
+    </div>
+    <nav class="tabla" id="tabla" aria-label="Secciones de QualityLab"></nav>
+    <div class="leyenda">
+      <span style="--c:var(--azul)"><i></i>Estrategia y conocimiento</span>
+      <span style="--c:var(--verde)"><i></i>Gestión y herramientas</span>
+      <span style="--c:#E0B400"><i></i>Personas y formación</span>
+      <span style="--c:var(--naranja)"><i></i>Resultados y reconocimiento</span>
+    </div>
+  </div>
+</section>
+
+<section class="seccion certs" aria-labelledby="t-cert"><div class="wrap">
+<div class="cab"><div><span class="eyebrow">Certificaciones · 24 de julio de 2026</span><h2 id="t-cert">Doble logro para MiRed</h2></div><p>MIRED IPS S.A.S. obtuvo con ICONTEC la certificación en ISO 7101:2023, la norma internacional de calidad en salud, y renovó su certificación ISO 9001:2015. Es el resultado del trabajo diario de cada colaborador.</p></div>
+<div class="certs-g">
+<article class="cert c7101"><div class="sello" aria-hidden="true"><small>ISO</small><b>7101</b><small>2023</small></div><div class="cert-t"><span class="chip nuevo">Nueva certificación</span><h3>ISO 7101:2023</h3><p class="norma">Gestión de la calidad en organizaciones de salud · ICONTEC</p><dl><div><dt>Certificados</dt><dd>24 de julio de 2026</dd></div><div><dt>Entrega del certificado</dt><dd>Ceremonia próximamente</dd></div></dl></div></article>
+<article class="cert c9001"><div class="sello" aria-hidden="true"><small>ISO</small><b>9001</b><small>2015</small></div><div class="cert-t"><span class="chip renov">Recertificados</span><h3>ISO 9001:2015</h3><p class="norma">Sistema de gestión de la calidad · ICONTEC</p>
+<ol class="ciclo" aria-label="Ciclo de certificación ISO 9001:2015"><li><b>2023</b><span>Certificación</span></li><li><b>2024</b><span>Seguimiento 1</span></li><li><b>2025</b><span>Seguimiento 2</span></li><li class="hoy"><b>2026</b><span>Re&shy;certificación</span></li></ol></div></article>
+</div>
+<div class="certs-sigue k"><div class="txt"><p class="t">Lo logramos, y seguimos trabajando.</p><p>Una certificación no es la meta final: es el compromiso de sostener lo que hacemos bien y mejorar lo que aún podemos hacer mejor. La calidad nunca para; mejora cada día, en cada atención y en cada proceso.</p><p class="l">¡La mejora comienza contigo!</p></div></div>
+</div></section>
+<section class="manifiesto" aria-labelledby="t-man">
+  <div class="wrap">
+    <blockquote id="t-man">Porque la calidad no es solo un sistema, <span>es una cultura.</span></blockquote>
+    <div>
+      <p>Bienvenido a Quality Lab, un espacio creado para acompañarte en el camino de la calidad en salud. Creemos en el valor de las personas, en el aprendizaje continuo y en pequeñas acciones que generan grandes cambios. Aquí encontrarás materiales útiles para tu trabajo, prácticas seguras, contenido formativo y un espacio para conectar con la mejora.</p>
+      <p>Somos un laboratorio vivo donde se aprende, se innova, se comparte y se mejora de manera permanente. Aquí, la calidad en salud se fortalece en la práctica diaria: fomentamos la gestión responsable de los procesos asistenciales y administrativos, el análisis continuo de resultados, el trabajo colaborativo entre los equipos y el compromiso con la seguridad del paciente. La calidad se transforma en acciones concretas que impactan positivamente la atención, la experiencia del usuario y los desenlaces en salud.</p>
+    </div>
+  </div>
+</section>
+
+<section class="seccion formula-mes" id="formula-mes" hidden></section>
+
+<section class="seccion pildoras-sec" aria-labelledby="t-pil-ini"><div class="wrap"><div class="cab"><div><span class="eyebrow">Píldoras Calidosas</span><h2 id="t-pil-ini">¡La mejora comienza contigo!</h2></div><img class="killo-cal" data-img="calidoso" alt="Killo con la camiseta Soy un Calidos@"></div><div class="pslider" data-pslider="general" aria-roledescription="carrusel" aria-label="Píldoras Calidosas"></div></div></section>
+
+<section class="seccion" id="calendario" aria-labelledby="t-cal">
+  <div class="wrap">
+    <div class="cab">
+      <div><span class="eyebrow">Calendario CALIDOSO 2026</span><h2 id="t-cal">Lo que viene en el laboratorio</h2></div>
+      <p>La próxima cita queda resaltada en verde. Las fechas pasadas salen solas del tablero.</p>
+    </div>
+    <div class="cal" id="cal"></div>
+    <p class="nota" id="cal-nota"></p>
+  </div>
+</section>
+
+<section class="seccion" style="padding-top:0" aria-labelledby="t-bit">
+  <div class="wrap">
+    <div class="cab">
+      <div><span class="eyebrow">Bitácora del laboratorio</span><h2 id="t-bit">Últimas noticias</h2></div>
+      <p>Lo que hemos vivido como equipo de calidad.</p>
+    </div>
+    <div class="bitacora" id="bit"></div>
+  </div>
+</section>
+
+<section class="seccion instrumentos" aria-labelledby="t-inst">
+  <div class="wrap">
+    <div class="cab">
+      <div><span class="eyebrow">Instrumentos del laboratorio</span><h2 id="t-inst">Herramientas de la calidad</h2></div>
+      <p>Tableros y aplicaciones del sistema de gestión. Cada instrumento abre en una pestaña nueva.</p>
+    </div>
+    <div class="lista" id="inst"></div>
+  </div>
+</section>
+<section class="seccion rollos" data-rollos="inicio" hidden></section>
+</div>
+<div class="pg pg-planeacion" data-sec="planeacion" hidden>
+<header class="hero">
+  <div class="wrap">
+    <div class="top"><img data-img="logo_w" alt="QualityLab"><span style="display:flex;flex-wrap:wrap;gap:14px;align-items:center"><span class="aliados"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></span><span class="codigo">PL-DIE-001 · Versión 3 · Planeación Estratégica 2018–2023</span></span></div>
+    <div class="origen">
+      <span class="eyebrow">Visión · primera versión, 2018</span>
+      <blockquote>“Ser un <mark>laboratorio viviente</mark> de innovación en la generación de salud en los diferentes procesos de atención primaria y complementaria, que nos proyecten como centro de excelencia en el país y en el mundo.”</blockquote>
+      <p>QualityLab nace de esa primera visión de MiRed. Aquí se reúne el ADN estratégico construido en 2018 con la Asociación Colombiana de Hospitales y Clínicas (ACHC), bajo la interventoría de Gestión de Calidad.</p>
+    </div>
+  </div>
+</header>
+
+<section class="proposito" aria-labelledby="t-prop">
+  <div class="wrap">
+    <div><span class="eyebrow">Propósito superior</span><h2 id="t-prop" style="margin-top:10px">El motor de todos los esfuerzos</h2></div>
+    <q>Generar consciencia y responsabilidad para el cuidado de sí mismo</q>
+  </div>
+  <div class="wrap bloque2">
+    <div class="mv" style="margin-top:0">
+      <article><span class="eyebrow">Misión</span><h3>Por qué existimos</h3><p>Somos una red con centros de atención de servicios integrales de salud, cercanos a nuestra población, enfocados en controlar el riesgo, generar conciencia y responsabilidad en el autocuidado.</p></article>
+      <article><span class="eyebrow">Visión 2023</span><h3>Hacia dónde vamos</h3><p>Para el 2023 ser una red con centros de atención y formación, oportunos, seguros y humanizados; con equipos de trabajo felices y de excelente desempeño; contribuyendo a la innovación, obteniendo resultados en salud y la sostenibilidad en la región Caribe.</p></article>
+    </div>
+    <div class="ejes"><span class="l">Ejes del direccionamiento</span><span>Generador de valor</span><span>Sostenibilidad</span><span>Centrado en el usuario</span><span>Participación activa de actores y grupos de interés</span></div>
+  </div>
+</section>
+
+<section class="seccion megas" aria-labelledby="t-megas">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Megas institucionales · meta 2023</span><h2 id="t-megas">Tres cifras que lo resumen todo</h2></div><p>Definidas a partir del modelo de negocios, las líneas y objetivos estratégicos, la misión, la visión, el mapa estratégico comparativo y la matriz de 4 fuerzas.</p></div>
+    <div class="mega-grid">
+      <div class="mega" style="--c:var(--verde)"><b>&lt;3%</b><span>De eventos adversos</span><small>Seguridad del paciente</small></div>
+      <div class="mega" style="--c:var(--amarillo)"><b>85%</b><span>Del recaudo final</span><small>Sostenibilidad financiera</small></div>
+      <div class="mega" style="--c:var(--naranja)"><b>50%</b><span>De colaboradores felices en el trabajo</span><small>Talento humano</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" aria-labelledby="t-val">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Valores institucionales</span><h2 id="t-val">Cómo actuamos</h2></div><p>Los tres valores actualizados en la construcción estratégica y la forma en que se viven cada día.</p></div>
+    <div class="valores">
+      <article class="valor" style="--c:var(--azul)"><h3>Responsabilidad</h3><p class="def">Asumir y cumplir con disciplina mis compromisos.</p><ul><li>Practico el autocuidado conmigo y con los demás.</li><li>Uso correctamente los recursos y la información para resultados eficientes.</li></ul></article>
+      <article class="valor" style="--c:var(--verde)"><h3>Trabajo en equipo</h3><p class="def">Unión que nos mueve a generar resultados en ambientes armónicos y de confianza.</p><ul><li>Participo con criterio y activamente en la solución de problemas.</li><li>Escucho y expreso mi opinión libre y respetuosamente, articulando el conocimiento de todos.</li></ul></article>
+      <article class="valor" style="--c:var(--naranja)"><h3>Amor</h3><p class="def">Energía para querer y dar lo mejor, a mí mismo, a los demás y a todo lo que nos rodea.</p><ul><li>Entrego con pasión todo mi potencial en cada una de las acciones.</li><li>Sentido de pertenencia y compromiso con nuestra institución.</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" style="padding-top:0" aria-labelledby="t-lin">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Líneas y objetivos estratégicos</span><h2 id="t-lin">4 líneas, 14 objetivos</h2></div><p>La hoja de ruta que conecta cada proceso de MiRed con la visión.</p></div>
+    <div class="lineas">
+      <article class="linea" style="--c:var(--verde)"><span class="n">1</span><div><h3>Modelo de atención seguro y humanizado, centrado en la salud del usuario, la familia y la comunidad</h3><ol>
+        <li><b>1.1</b>Generar consciencia del autocuidado y hábitos saludables de vida.</li>
+        <li><b>1.2</b>Ofrecer servicios humanizados y seguros.</li>
+        <li><b>1.3</b>Ofertar servicios integrales para el usuario, la familia y la comunidad caracterizada y georreferenciada.</li></ol></div></article>
+      <article class="linea" style="--c:var(--azul)"><span class="n">2</span><div><h3>Sostenibilidad financiera y eficiencia operacional</h3><ol>
+        <li><b>2.1</b>Contar con soluciones integrales basadas en TIC para satisfacer las necesidades entre aseguradoras, usuarios y MiRed.</li>
+        <li><b>2.2</b>Optimizar los procesos asistenciales y administrativos brindando atención con calidad.</li>
+        <li><b>2.3</b>Mejorar la infraestructura física y dotación de la red de servicios.</li>
+        <li><b>2.4</b>Gestionar el riesgo asistencial, financiero y ambiental de la Red.</li></ol></div></article>
+      <article class="linea" style="--c:var(--naranja)"><span class="n">3</span><div><h3>Talento humano calificado en equipos de trabajo de alto desempeño y felices</h3><ol>
+        <li><b>3.1</b>Desarrollar una cultura organizacional centrada en el usuario y su familia, con pertenencia y compromiso institucional.</li>
+        <li><b>3.2</b>Tener entornos laborales amigables y seguros.</li>
+        <li><b>3.3</b>Fortalecer competencias en el ser, saber y hacer.</li>
+        <li><b>3.4</b>Promover la felicidad en el trabajo.</li></ol></div></article>
+      <article class="linea" style="--c:var(--violeta)"><span class="n">4</span><div><h3>Generación de conocimiento e innovación</h3><ol>
+        <li><b>4.1</b>Generar conocimiento a partir del aprendizaje organizacional y la investigación.</li>
+        <li><b>4.2</b>Desarrollar buenas prácticas objeto de referenciación.</li>
+        <li><b>4.3</b>Contribuir al desarrollo de competencias del personal en formación en áreas de la salud y administrativas.</li></ol></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" style="padding-top:0" aria-labelledby="t-pol">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Políticas estratégicas</span><h2 id="t-pol">Nuestros compromisos</h2></div><p>Toca cada política para leer su declaración completa.</p></div>
+    <div class="politicas">
+      <details><summary><b>01</b>Prestación de servicios de salud</summary><p>MiRed Barranquilla IPS se compromete con los usuarios y sus familias a ofrecer servicios de salud de calidad, integrales, cercanos a la comunidad, con formación continua de sus colaboradores y un enfoque dirigido a la promoción de la cultura del autocuidado.</p></details>
+      <details open><summary><b>02</b>Calidad</summary><p>MiRed Barranquilla IPS se compromete a trabajar en equipo para mantener la mejora continua de todos sus procesos, con servicios de salud humanizados, seguros, socialmente responsables, logrando la satisfacción de los usuarios, sus familias y los colaboradores.</p></details>
+      <details><summary><b>03</b>Humanización</summary><p>MiRed Barranquilla IPS se compromete a trabajar con la comunidad para mejorar su calidad de vida, con un trato amoroso, digno, respetuoso, en ambientes confortables, de la mano de colaboradores felices y con actitud dispuesta a resolver necesidades y expectativas.</p></details>
+      <details><summary><b>04</b>Seguridad de la atención</summary><p>MiRed Barranquilla IPS se compromete a identificar, prevenir, disminuir y controlar las acciones inseguras asociadas a los riesgos institucionales, creando una cultura organizacional basada en la verdad, disciplina, responsabilidad y aprendizaje de los errores.</p></details>
+      <details><summary><b>05</b>Gestión integral del riesgo</summary><p>MiRed Barranquilla IPS se compromete responsablemente a identificar, analizar, intervenir, controlar y mitigar los riesgos integrales hacia: el ser humano, el ambiente físico, la tecnología, la comunicación institucional, la sostenibilidad ambiental y financiera.</p></details>
+      <details><summary><b>06</b>Gestión de la información y las comunicaciones</summary><p>MiRed Barranquilla IPS se compromete a contar con información oportuna, confiable, suficiente y segura, para tomar decisiones que mejoren los procesos institucionales, la formación del talento humano y la investigación.</p></details>
+      <details><summary><b>07</b>Docencia-servicio e investigación</summary><p>MiRed Barranquilla IPS contribuye con el desarrollo de competencias en el ser, saber, hacer y convivir de los actores de la relación docencia servicio, en un contexto ético, académico y de bienestar; generando conocimiento mediante la investigación y la innovación de bajo riesgo para contribuir al mejoramiento de los retos en salud.</p></details>
+      <details><summary><b>08</b>Gestión del talento humano</summary><p>MiRed Barranquilla IPS se compromete a tener colaboradores calificados y felices dentro de una cultura organizacional centrada en la responsabilidad, el autocuidado, el amor y el trabajo en equipo.</p></details>
+      <details><summary><b>09</b>Institución Amiga de la Mujer y la Infancia (IAMII)</summary><p>MiRed Barranquilla IPS S.A.S. se compromete a implementar, dentro del marco de la viabilidad institucional, todo el espectro de acciones para promocionar, brindar cuidado y protección, atención y apoyo a madres, niñas y niños menores de seis años, adoptando la estrategia IAMII como herramienta para potenciar las acciones de Atención Primaria en Salud, bajo los principios de universalidad, igualdad y no discriminación, participación e inclusión y responsabilidad social.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" style="padding-top:0" aria-labelledby="t-proy">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Proyectos clave institucionales</span><h2 id="t-proy">17 proyectos en orden de prioridad</h2></div><p>La etiqueta verde señala dónde cada proyecto se vive hoy dentro de QualityLab.</p></div>
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Prioridad</th><th>Proyecto clave</th></tr></thead>
+      <tbody>
+        <tr><td class="p">1</td><td>Gestión de la cultura y clima organizacional con enfoque de humanización, prevención de la enfermedad, promoción de la salud, calidad de la atención y docencia de servicio</td></tr>
+        <tr><td class="p">2</td><td>Plan de educación y entrenamiento para colaboradores, usuarios y familias, estudiantes y docentes, que incluya la inducción y reinducción</td></tr>
+        <tr><td class="p">3</td><td>Optimización de procesos (incluyendo docencia servicio) bajo metodología Lean Six Sigma <span class="chip">Escuela de Calidad</span></td></tr>
+        <tr><td class="p">4</td><td>Programa de Seguridad del Paciente <span class="chip">SIRESP</span></td></tr>
+        <tr><td class="p">5</td><td>Programa de Humanización</td></tr>
+        <tr><td class="p">6</td><td>Plan de comunicación institucional intra y extrainstitucional que incluya todos los grupos de interés</td></tr>
+        <tr><td class="p">7</td><td>Proyecto de mejoramiento de infraestructura</td></tr>
+        <tr><td class="p">8</td><td>Programa de bienestar y fidelización para colaboradores, estudiantes y docentes</td></tr>
+        <tr><td class="p">9</td><td>Programa de Docencia e Investigación</td></tr>
+        <tr><td class="p">10</td><td>Programa de gestión de conocimiento mediante Big Data <span class="chip">Tableros de QualityLab</span></td></tr>
+        <tr><td class="p">11</td><td>Fortalecimiento de los programas de PyM, atención domiciliaria y atención a eventos masivos</td></tr>
+        <tr><td class="p">12</td><td>Centro de investigación e innovación</td></tr>
+        <tr><td class="p">13</td><td>Sistema Único de Acreditación nacional</td></tr>
+        <tr><td class="p">14</td><td>Ampliación de portafolio de servicios y capacidad instalada</td></tr>
+        <tr><td class="p">15</td><td>Participación en Cluster Salud</td></tr>
+        <tr><td class="p">16</td><td>Programa de internacionalización de servicios e investigación</td></tr>
+        <tr><td class="p">17</td><td>Implementación de la estrategia IAMII, buscando la certificación de algunas sedes de MiRed IPS</td></tr>
+      </tbody></table></div>
+  </div>
+</section>
+
+<section class="seccion" style="padding-top:0" aria-labelledby="t-ruta">
+  <div class="wrap">
+    <div class="cab"><div><span class="eyebrow">Ruta de construcción</span><h2 id="t-ruta">Cómo se construyó</h2></div><p>Del levantamiento de procesos a la plataforma estratégica, paso a paso.</p></div>
+    <div class="ruta">
+      <div class="hito"><time>6 jun 2018</time><h3>Inicia el proyecto con la ACHC</h3><p>Mejoramiento del direccionamiento estratégico y de procesos, con interventoría de Gestión de Calidad. Se levantan procesos y procedimientos tomando como referente el mapa de procesos inicial.</p></div>
+      <div class="hito"><time>21 y 22 jun 2018</time><h3>Pensamiento sistémico y liderazgo estratégico</h3><p>Curso teórico-práctico para alta gerencia, equipo directivo y coordinadores de Pasos y Caminos: 43 participantes. Se priorizan los grupos de interés por influencia y dependencia.</p></div>
+      <div class="hito"><time>18 jul 2018</time><h3>Análisis DOFA por grupo de interés</h3><p>Jornada virtual de retroalimentación de 6 horas con los líderes de cada grupo.</p></div>
+      <div class="hito"><time>16 y 17 ago 2018</time><h3>Mapas estratégicos con curvas de valor</h3><p>Usuarios y familias, colaboradores, universidades y estudiantes, aseguradoras, proveedores, Junta Directiva y Secretaría de Salud. Cada grupo construye su matriz de 4 fuerzas.</p></div>
+      <div class="hito" style="--c:var(--verde)"><time>13 y 14 sep 2018</time><h3>Modelo de negocios, propósito, misión, visión y valores</h3><p>Co-creación del equipo directivo con enfoque de generación de valor.</p></div>
+      <div class="hito"><time>dic 2018 · V1</time><h3>Emisión del documento PL-DIE-001</h3><p>Elaboró Elizabeth Iglesias Espinosa, Subgerente de Calidad.</p></div>
+      <div class="hito"><time>oct 2019</time><h3>Estandarización de procesos</h3><p>Se socializan 19 procedimientos y caracterizaciones entregados por la ACHC.</p></div>
+      <div class="hito"><time>dic 2019 · V2 / dic 2020 · V3</time><h3>Revisión y actualización</h3><p>La versión 3 actualiza el mapa de procesos institucional.</p></div>
+      <div class="hito hoy" style="--c:var(--verde)"><time>Hoy</time><h3>QualityLab, el laboratorio vivo</h3><p>La visión de 2018 toma forma: un espacio donde toda MiRed aprende, innova, comparte y mejora.</p></div>
+    </div>
+  </div>
+</section>
+<section class="seccion firma"><div class="wrap"><div class="certs-sigue k"><div class="txt"><p class="t">La estrategia se cumple en el día a día.</p><p>Cada objetivo de la planeación estratégica avanza con las decisiones y acciones de cada colaborador, en cada proceso y en cada atención.</p><p class="l">¡La mejora comienza contigo!</p></div><img class="killo" data-img="killo_mano_d" alt="Killo"></div></div></section>
+<section class="seccion rollos" data-rollos="planeacion" hidden></section>
+</div>
+<div class="pg pg-biblioteca" data-sec="biblioteca" hidden>
+<header class="hero"><div class="wrap">
+<div class="barra"><img data-img="logo_w" alt="QualityLab"><span class="aliados"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></span></div>
+<div class="elemento" style="--c:var(--azul)" aria-hidden="true"><small><span>02</span><span>Conocimiento</span></small><b>Bi</b><em>Biblioteca</em></div>
+<div><h1>Biblioteca</h1><p>Un espacio para fortalecer las competencias del talento humano con formación continua, articulada con las necesidades institucionales, los hallazgos de auditoría, los resultados de los comités y los objetivos estratégicos del Sistema de Gestión de la Calidad.</p></div><aside class="minipil" data-minipil="biblioteca" aria-label="Píldora Calidosa"></aside></div></header><section class="seccion"><div class="wrap"><div class="cab"><div><span class="eyebrow">Estantes de conocimiento</span><h2>Áreas de la Biblioteca</h2></div><p>Cada estante reúne las capacitaciones por área. Cada material abre el archivo original en Drive. La lista se alimenta desde la hoja de datos de QualityLab.</p></div>
+<div class="estantes" id="est"></div></div></section>
+<section class="seccion" style="padding-top:0"><div class="wrap"><div class="almera"><div><span class="eyebrow">Recursos · Software del SGC</span><h2>Ingresa a ALMERA</h2><p>Inicia sesión en nuestro software del Sistema de Gestión de Calidad. Dale un buen uso a la herramienta: sigamos en la mejora continua de la que tú también haces parte.</p></div><a class="btn" id="almera" href="#" target="_blank" rel="noopener">Ingresar a ALMERA</a></div></div></section>
+<section class="seccion firma"><div class="wrap"><div class="certs-sigue k"><div class="txt"><p class="t">Lo que aprendes aquí, lo llevas a tu proceso.</p><p>Cada guía, capacitación y material de esta biblioteca tiene sentido cuando se aplica en el trabajo diario.</p><p class="l">¡La mejora comienza contigo!</p></div><img class="killo" data-img="killo_med_pc" alt="Killo"></div></div></section>
+<section class="seccion rollos" data-rollos="biblioteca" hidden></section>
+</div>
+<div class="pg pg-herramientas" data-sec="herramientas" hidden>
+<header class="hero"><div class="wrap">
+<div class="barra"><img data-img="logo_w" alt="QualityLab"><span class="aliados"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></span></div>
+<div class="elemento" style="--c:var(--verde)" aria-hidden="true"><small><span>03</span><span>Gestión</span></small><b>He</b><em>Herramientas</em></div>
+<div><h1>Herramientas</h1><p>Las 7 herramientas de la calidad son instrumentos prácticos que nos permiten transformar datos en decisiones y problemas en oportunidades de mejora. En MiRed IPS las usamos como Píldoras Calidosas: aprendizaje rápido y aplicado, comprensible en pocos minutos y útil en el trabajo diario.</p></div><aside class="minipil" data-minipil="herramientas" aria-label="Píldora Calidosa"></aside></div></header><section class="seccion pildoras-sec" aria-labelledby="t-pil-her"><div class="wrap"><div class="cab"><div><span class="eyebrow">Píldoras Calidosas</span><h2 id="t-pil-her">Pon las herramientas en acción</h2></div></div><div class="pslider" data-pslider="herramientas slides" aria-roledescription="carrusel" aria-label="Píldoras Calidosas"></div></div></section><section class="seccion" style="padding-top:0"><div class="wrap"><div class="cab"><div><span class="eyebrow">Caja de herramientas</span><h2>Las 7 herramientas de la calidad</h2></div><p>Para analizar procesos, identificar causas reales, priorizar acciones y fortalecer la seguridad del paciente y la experiencia del usuario. La etiqueta indica la fase DMAIC donde más se usa cada una.</p></div>
+<div class="pildoras"><article class="pildora" style="--c:var(--azul)"><div class="ico sim" aria-hidden="true"><small>01</small><b>Ce</b></div>
+<div class="txt"><span class="n">01 · Ishikawa</span><h3>Diagrama de Causa-Efecto</h3><p>Identifica las causas raíz de un problema.</p><span class="pill">DMAIC · Analizar</span></div></article><article class="pildora" style="--c:var(--verde)"><div class="ico sim" aria-hidden="true"><small>02</small><b>Hv</b></div>
+<div class="txt"><span class="n">02 · Check sheet</span><h3>Hoja de verificación</h3><p>Registra y organiza datos de forma simple y ordenada.</p><span class="pill">DMAIC · Medir</span></div></article><article class="pildora" style="--c:var(--naranja)"><div class="ico sim" aria-hidden="true"><small>03</small><b>Gc</b></div>
+<div class="txt"><span class="n">03 · Control chart</span><h3>Gráfico de control</h3><p>Monitorea la estabilidad de un proceso a través del tiempo.</p><span class="pill">DMAIC · Controlar</span></div></article><article class="pildora" style="--c:var(--azul)"><div class="ico sim" aria-hidden="true"><small>04</small><b>Df</b></div>
+<div class="txt"><span class="n">04 · Flowchart</span><h3>Diagrama de flujo</h3><p>Visualiza cada paso de un proceso para detectar oportunidades de mejora.</p><span class="pill">DMAIC · Definir</span></div></article><article class="pildora" style="--c:var(--verde)"><div class="ico sim" aria-hidden="true"><small>05</small><b>Hi</b></div>
+<div class="txt"><span class="n">05 · Histogram</span><h3>Histograma</h3><p>Muestra la distribución y variabilidad de los datos.</p><span class="pill">DMAIC · Medir</span></div></article><article class="pildora" style="--c:var(--naranja)"><div class="ico sim" aria-hidden="true"><small>06</small><b>Pa</b></div>
+<div class="txt"><span class="n">06 · 80 / 20</span><h3>Diagrama de Pareto</h3><p>Prioriza las causas que generan mayor impacto.</p><span class="pill">DMAIC · Analizar</span></div></article><article class="pildora" style="--c:var(--violeta)"><div class="ico sim" aria-hidden="true"><small>07</small><b>Dd</b></div>
+<div class="txt"><span class="n">07 · Scatter plot</span><h3>Diagrama de dispersión</h3><p>Analiza la relación entre dos variables.</p><span class="pill">DMAIC · Analizar</span></div></article></div>
+<div class="invita"><p>Como laboratorio vivo, invitamos a cada colaborador a compartir sus propias experiencias aplicando estas herramientas en el día a día, para seguir construyendo juntos una cultura de calidad basada en la evidencia.</p><p class="lema-i">¡La mejora comienza contigo!</p><img class="killo" data-img="killo_med_lupa" alt="Killo"></div></div></section>
+<section class="seccion" style="padding-top:0" aria-labelledby="t-ej"><div class="wrap"><div class="cab"><div><span class="eyebrow">Ejemplos prácticos</span><h2 id="t-ej">Así se ven en la práctica</h2></div><p>Un ejemplo sencillo de cada herramienta aplicado a situaciones de una IPS. Son ejemplos didácticos con datos ficticios, pensados para aprender a leer cada gráfico.</p></div><div class="ejemplos" id="ejemplos"></div></div></section>
+<section class="seccion instrumentos"><div class="wrap"><div class="cab"><div><span class="eyebrow">Instrumentos digitales</span><h2>Tableros y aplicaciones</h2></div><p>Las herramientas del sistema de gestión construidas en QualityLab. Cada una abre en una pestaña nueva.</p></div><div class="lista" id="inst2"></div></div></section>
+<section class="seccion rollos" data-rollos="herramientas" hidden></section>
+</div>
+<div class="pg pg-escuela" data-sec="escuela" hidden>
+<header class="hero"><div class="wrap">
+<div class="barra"><img data-img="logo_w" alt="QualityLab"><span class="aliados"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></span></div>
+<div class="elemento" style="--c:#E0B400" aria-hidden="true"><small><span>06</span><span>Personas</span></small><b>Ec</b><em>Escuela de Calidad</em></div>
+<div><h1>Escuela de Calidad</h1><p>Una estrategia de fortalecimiento del conocimiento institucional para desarrollar competencias en calidad, mejora continua, gestión del riesgo y cumplimiento normativo, con enfoque en hacer bien las cosas desde la primera vez.</p><div class="avance"><b id="pct">0%</b><div><div class="cinturon" role="img" aria-label="Avance de la 4ta Ola"><i id="barra" style="width:0"></i></div><small id="hechos"></small></div></div><a class="btn aula" href="https://script.google.com/a/macros/miredips.org/s/AKfycbzeGUK04w6lhUzOhzFlNcdzkjETqf030dk8rZp-Wxz-WedmeJmriul4RpHg2h5tqD_Q/exec" target="_blank" rel="noopener">Entrar al aula virtual</a></div></div></header><section class="seccion"><div class="wrap"><div class="cab"><div><span class="eyebrow">4ta Ola 2026 · Yellow Belt Lean Six Sigma</span><h2>¿Estás listo para ser un INFLUEN[Ser]?</h2></div><p>El cronograma se actualiza solo: lo realizado se atenúa y la próxima clase queda resaltada en amarillo.</p></div>
+<div class="dos"><ol class="mods" id="mods"></ol>
+<aside class="lado">
+<div class="card"><span class="eyebrow">Dónde y cuándo</span><h3>Martes, 2:00 a 5:00 p.m.</h3><p>Auditorio Rómulo Rodado, Adelita de Char. Calle 50 n.° 20-91.</p></div>
+<div class="card"><span class="eyebrow">Cohorte</span><h3>51 inscritos</h3><p>Asistencia registrada en cada clase y evaluación de 0 a 5 por módulo.</p></div>
+<div class="card"><span class="eyebrow">Nota final</span><div class="peso">
+<div style="--w:15%;--c:var(--azul)"><span>Asistencia</span><span>15 %</span><i></i></div>
+<div style="--w:35%;--c:var(--verde)"><span>Aprobación de evaluaciones</span><span>35 %</span><i></i></div>
+<div style="--w:50%;--c:var(--amarillo)"><span>Trabajo final</span><span>50 %</span><i></i></div></div></div>
+</aside></div></div></section>
+<section class="seccion homenaje" id="homenaje" hidden></section>
+<section class="seccion" style="padding-top:0"><div class="wrap"><div class="cab"><div><span class="eyebrow">Olas de formación</span><h2>Una escuela que crece cada año</h2></div><p>Las memorias fotográficas de cada ola de formación. Toca una foto para verla en grande.</p></div>
+<div class="olas2" id="olas"></div></div></section>
+<section class="seccion firma"><div class="wrap"><div class="certs-sigue k"><div class="txt"><p class="t">Cada módulo que terminas es una mejora que llevas a tu equipo.</p><p>La Escuela de Calidad forma personas que transforman procesos. Lo que aprendes en el aula se nota en la atención.</p><p class="l">¡La mejora comienza contigo!</p></div><img class="killo" data-img="killo_idea" alt="Killo"></div></div></section>
+</div>
+<div class="pg pg-experiencias" data-sec="experiencias" hidden>
+<header class="hero"><div class="wrap">
+<div class="barra"><img data-img="logo_w" alt="QualityLab"><span class="aliados"><img data-img="mired_blanco" alt="MiRed IPS"><img data-img="gc_blanco" alt="Gestión de la Calidad"></span></div>
+<div class="elemento" style="--c:var(--naranja)" aria-hidden="true"><small><span>08</span><span>Resultados</span></small><b>Ex</b><em>Experiencias Exitosas</em></div>
+<div><h1>Experiencias Exitosas</h1><p>Visibilizamos, reconocemos y compartimos las prácticas, iniciativas y acciones que han generado resultados positivos en los procesos asistenciales y administrativos, aportando valor al Sistema de Gestión de la Calidad.</p><div class="stats" id="expstats"></div></div><aside class="minipil" data-minipil="experiencias" aria-label="Píldora Calidosa"></aside></div></header><section class="seccion"><div class="wrap"><div class="cab"><div><span class="eyebrow">Vitrina 2020–2025</span><h2>Nuestra huella en foros de calidad</h2></div><p>Cada año, los equipos de MiRed llevan sus mejores prácticas a escenarios nacionales e internacionales.</p></div>
+<div class="linea-t" id="exp"></div></div></section>
+<section class="seccion firma"><div class="wrap"><div class="certs-sigue k"><div class="txt"><p class="t">Tu próxima buena práctica puede estar en esta vitrina.</p><p>Cada experiencia exitosa empezó con un equipo que decidió medir, analizar y mejorar su proceso.</p><p class="l">¡La mejora comienza contigo!</p></div><img class="killo" data-img="calidoso" alt="Killo, Soy un Calidos@"></div></div></section>
+</div>
+</main>
+<div class="lb" id="lb" hidden><button type="button" class="lb-x" id="lbx" aria-label="Cerrar">×</button><img id="lbimg" alt=""><p id="lbcap"></p></div>
+<footer class="inst"><div class="wrap"><div class="grupo"><img data-img="mired_color" alt="MiRed IPS"><img data-img="gc_color" alt="Gestión de la Calidad"></div><p><strong>MIRED IPS S.A.S</strong> · Subgerencia de Calidad<br>QualityLab, Tu Biblioteca de Calidad</p><div class="grupo"><img data-img="supersalud" alt="Vigilado Supersalud"><img data-img="alcaldia" alt="Alcaldía de Barranquilla"><span class="autoria">Creado por Ing. Yuranis Deulofeos</span></div></div></footer>
+<script>
+var DATOS = <?!= datos ?>;
+var IMG = <?!= imgs ?>;
+(function(){var l=document.querySelectorAll("img[data-img]");for(var i=0;i<l.length;i++){l[i].src=IMG[l[i].getAttribute("data-img")]||"";}})();
+var INICIAL = <?= seccion ?>;
+</script>
+<?!= include('App'); ?>
+</body>
+</html>
